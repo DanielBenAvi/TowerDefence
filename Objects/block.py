@@ -25,7 +25,7 @@ class Block:
                          1)  # draw the border
 
     def click(self):
-        self.color = "blue"
+        ...
 
     def move(self, target_x: int, target_y: int):
         ...

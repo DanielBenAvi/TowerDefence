@@ -16,6 +16,8 @@ Pygame CONSTANTS
 CLOCK = pygame.time.Clock()
 MOVE_OBJECTS = pygame.USEREVENT + 1
 CREATE_ENEMY = pygame.USEREVENT + 2
+TOWER_ATTACK = pygame.USEREVENT + 3
+BULLET_MOVE = pygame.USEREVENT + 4
 
 '''
 Level CONSTANTS

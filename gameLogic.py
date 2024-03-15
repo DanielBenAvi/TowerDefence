@@ -7,11 +7,14 @@ from constance import LEVEL_1
 @dataclass
 class GameLogic:
     logicBoard: list[list[object]]
-    objects: list
+    enemies: list
+    towers: list
+    points: int = 0
 
     def __init__(self):
         self.logicBoard = []
-        self.objects = []
+        self.enemies = []
+        self.towers = []
 
     def init_board(self, width: int, height: int):
         self.logicBoard = [[None for _ in range(width)] for _ in range(height)]
@@ -19,8 +22,11 @@ class GameLogic:
     def add_to_logic_board(self, x: int, y: int, obj):
         self.logicBoard[y][x] = obj
 
-    def add_object(self, obj):
-        self.objects.append(obj)
+    def add_enemy(self, obj):
+        self.enemies.append(obj)
+
+    def add_tower(self, obj):
+        self.towers.append(obj)
 
     def remove_object(self, x: int, y: int):
         self.logicBoard[y][x] = None
@@ -47,9 +53,35 @@ class GameLogic:
                     obj.draw(screen=screen)
 
     def move_objects(self):
-        for obj in self.objects:
-            obj.move(LEVEL_1)
+        for obj in self.enemies:
+            if hasattr(obj, "move"):
+                obj.move(LEVEL_1)
+
+    def move_bullets(self):
+        if len(self.towers) == 0:
+            return
+        for obj in self.towers:
+            for bullet in obj.bullets:
+                if hasattr(bullet, "move"):
+                    bullet.move()
 
     def draw_objects(self, screen: object):
-        for obj in self.objects:
+        for obj in self.enemies:
             obj.draw(screen=screen)
+
+        for obj in self.towers:
+            obj.draw(screen=screen)
+
+            for bullet in obj.bullets:
+                bullet.draw(screen=screen)
+
+    def remove_dead(self):
+        for obj in self.enemies:
+            if not obj.alive:
+                self.enemies.remove(obj)
+                self.points += 1
+
+        for obj in self.towers:
+            for bullet in obj.bullets:
+                if not bullet.alive:
+                    obj.bullets.remove(bullet)

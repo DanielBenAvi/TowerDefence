@@ -34,6 +34,7 @@ class Enemy:
         self.health = 100
         self.direction = (1, 1)
         self.been = set()
+        self.alive = True
 
     def draw(self, screen: object):
         radius = BLOCK_SIZE // 4
@@ -61,6 +62,8 @@ class Enemy:
         print("Enemy died")
         self.x = -1
         self.y = -1
+        self.alive = False
+
 
     def move(self, level: list[list[int]]):
 
